@@ -134,7 +134,6 @@
                                 "starting_time": _ts(7, 18),
                                 "ending_time": _ts(7, 22)},
 
-
                             {"color": "orange", "label": "Cleaves",  // healer DPS?
                                 "starting_time": _ts(8, 28),
                                 "ending_time": _ts(9, 32)},
@@ -142,27 +141,79 @@
                             // Once dps are in launchers:
                             //   -- heroism, then launch (?)
                             {"color": "red", "label": "Raigonn",  // Plan who goes where
-                                "starting_time": _ts(10, 10),
-                                "ending_time": _ts(11, 43)},
+                                "starting_time": _ts(10, 10), "ending_time": _ts(11, 43)},
                             {"color": "orangered", "label": "(Weak)",  // Plan who goes where
-                                "starting_time": _ts(11, 43),
-                                // carapace breaks: 11:43
-                                "ending_time": _ts(12, 30)},
+                                "starting_time": _ts(11, 43), "ending_time": _ts(12, 30)},
 
                     ]
                 },
-                {label: "Tank", times: [
-//                    {"color": "pink", "label": "", "starting_time": 800000, "ending_time": 900000},
-//                    {"color": "pink", "label": "", "starting_time": 900000, "ending_time": 400000}
+                {label: "GoAK", times: [
+                    // Guardian of Ancient Kings: 12 seconds, 3 min CD
+                    {"color": "lightsalmon", "label": "Trash 1",
+                        "starting_time": _ts(0, 25), "ending_time": _ts(0, 37)},  // trash 1
+                    {"color": "lightsalmon", "label": "Bridge",
+                        "starting_time": _ts(3, 40), "ending_time": _ts(3, 52)},  // bridge trash
+                    {"color": "lightsalmon", "label": "After CS",
+                        "starting_time": _ts(7, 35), "ending_time": _ts(7, 47)},
                 ]},
-                {label: "Heal", times: [
-//                    {"color": "grey", "label": "", "starting_time": 910000, "ending_time": 900000},
+                // GK: TODO: Build these dynamically based on talent choices!
+                {label: "AW", times: [
+                    // (3 min) Avenging Wrath: +20% healing, 20 seconds
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(0, 25), "ending_time": _ts(0, 45)},  // trash 1
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(3, 40), "ending_time": _ts(4, 0)},  // bridge trash
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(7, 40), "ending_time": _ts(8, 0)},  // after CS (2)
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(11, 40), "ending_time": _ts(12, 0)},  // Raigonn
                 ]},
-                {label: "DPS", times: [
-//                    {"color": "lightBlue", "label": "", "starting_time": 910000, "ending_time": 910000}
+//                {label: "SW", times: [
+//                    // (3 min) Sanctified Wrath: +20% healing, + 20% healing RECEIVED, 30 seconds
+//                    {"color": "gold", "label": "",
+//                        "starting_time": _ts(0, 25), "ending_time": _ts(0, 55)}, // trash 1
+//                    {"color": "gold", "label": "",
+//                        "starting_time": _ts(3, 40), "ending_time": _ts(4, 10)}, // bridge trash
+//                    {"color": "gold", "label": "",
+//                        "starting_time": _ts(3, 40), "ending_time": _ts(4, 10)},
+//                ]},
+//                {label: "HA", times: [
+//                    // (2 min) Holy Avenger: 18 seconds Many Holy Power
+//                    {"color": "salmon", "label": "",
+//                        "starting_time": _ts(0, 25), "ending_time": _ts(0, 35)},
+//                    {"color": "salmon", "label": "",
+//                        "starting_time": _ts(3, 40), "ending_time": _ts(3, 58)},
+//                ]},
+                {label: "LH", times: [
+                    // (1 min) Light's Hammer: 14 seconds
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(0, 20), "ending_time": _ts(0, 34)}, // trash 1
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(1, 30), "ending_time": _ts(1, 44)}, // first boss
+                    // {"color": "gold", "label": "",
+                    //    "starting_time": _ts(2, 38), "ending_time": _ts(2, 52)}, // wall climbing
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(3, 38), "ending_time": _ts(3, 52)}, // after gate
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(7, 30), "ending_time": _ts(7, 44)}, // after cutscene
+                    {"color": "gold", "label": "?",
+                        "starting_time": _ts(8, 40), "ending_time": _ts(8, 54)}, // cleave boss
+                    {"color": "gold", "label": "Adds",
+                        "starting_time": _ts(10, 15), "ending_time": _ts(10, 29)}, // Raigonn adds
+                    {"color": "gold", "label": "",
+                        "starting_time": _ts(11, 30), "ending_time": _ts(11, 42)}, // weakened shell
+
                 ]},
+
+//                {label: "Heal", times: [
+////                    {"color": "grey", "label": "", "starting_time": 910000, "ending_time": 900000},
+//                ]},
+//                {label: "DPS", times: [
+////                    {"color": "lightBlue", "label": "", "starting_time": 910000, "ending_time": 910000}
+//                ]},
                 {label: "Hero", times: [
-//                    {"color": "lightBlue", "label": "", "starting_time": 910000, "ending_time": 910000}
+                    {"color": "lightBlue", "label": "Heroism",
+                        "starting_time": _ts(10, 09), "ending_time": _ts(10, 49)}
                 ]},
             ];
 
@@ -200,6 +251,7 @@
 
 <div>
     <h3>Gate of the Setting Sun: 13:00</h3>
+    <div><a href="http://www.youtube.com/watch?v=0aO8R1nIRgk">Narrated by Hamlet</a></div>
     <div width="100%" id="timelineRelativeTime"></div>
 </div>
 
