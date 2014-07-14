@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="../lib/d3-timeline.js"></script>
+
+    <style type="text/css">
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 10px;
+        }
+
+        .timeline-label {
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+
+        #timeline2 .axis {
+            transform: translate(0px, 30px);
+            -ms-transform: translate(0px, 30px);  /* IE 9 */
+            -webkit-transform: translate(0px, 30px);  /* Safari and Chrome */
+            -o-transform: translate(0px, 30px);  /* Opera */
+            -moz-transform: translate(0px, 30px);  /* Firefox */
+        }
+
+        .coloredDiv {
+            height: 20px;
+            width: 20px;
+            float: left;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+
+//            // GK TODO: Add ability icons (?)
+//            var iconTestData = [
+//                {icon: "jackie.png", times: [
+//                    {"starting_time": 52800000, "ending_time": 59900000},
+//                    {"starting_time": 67900000, "ending_time": 74400000}
+//                ]},
+//                {icon: "troll.png", times: [
+//                    {"starting_time": 59910000, "ending_time": 61900000},
+//                ]},
+//                {icon: "wat.png", times: [
+//                    {"starting_time": 61910000, "ending_time": 63910000}
+//                ]},
+//            ];
+
+            var _millis = function (mins, secs, offset) {
+                // milliseconds for mins:secs with an offset (secs)
+                return 1000 * ((60 * mins) + secs + offset);
+            };
+
+            var _customStart = function (offset) {
+                // timestamp function based on video timestamps
+                return function (mins, secs) {
+                    return _millis(mins, secs, -9.0);  // Hamlet GoSS starts at 0:09
+                }
+            };
+
+            // Times based on Hamlet's video: http://www.youtube.com/watch?v=0aO8R1nIRgk
+            var _ts = _customStart(-9.0);
+            var dataGate = [
+                // times in msec. 1 min = 60,000 msec
+                {
+                    label: "Trash",
+                    times: [
+                        {"color": "orange", "label": "", // 1
+                            "starting_time": _ts(0, 10),
+                            "ending_time": _ts(0, 13)},
+                        {"color": "orange", "label": "", // 4
+                            "starting_time": _ts(0, 13),
+                            "ending_time": _ts(0, 16)},
+                        {"color": "darkorange", "label": "", // 6
+                            "starting_time": _ts(0, 16),
+                            "ending_time": _ts(0, 21)},
+                        {"color": "red", "label": "", // 9
+                            "starting_time": _ts(0, 21),
+                            "ending_time": _ts(1, 14)},
+                        {"color": "orange", "label": "", // 4ish remaining
+                            "starting_time": _ts(1, 14),
+                            "ending_time": _ts(1, 24)},
+
+                        // wall-climbing trash
+                        {"color": "gold", "label": "", // 4
+                            "starting_time": _ts(2, 45),
+                            "ending_time": _ts(3, 18)},
+
+                        // after-bridge trash
+                        {"color": "orangered", "label": "", // 4
+                            "starting_time": _ts(3, 40),
+                            "ending_time": _ts(3, 55)},
+                        {"color": "orange", "label": "", // 2 ragers: tranq!
+                            "starting_time": _ts(3, 55),
+                            "ending_time": _ts(4, 12)},
+
+                        // pre-elevator
+                       {"color": "gold", "label": "", // CC two, wind shaper
+                            "starting_time": _ts(4, 25),
+                            "ending_time": _ts(4, 40)},
+
+                        // after cutscene 1
+                       {"color": "gold", "label": "", // 2 ragers, 1 wind shaper: tranq!
+                            "starting_time": _ts(7, 25),
+                            "ending_time": _ts(7, 56)},
+
+                        // after cutscene 2
+                       {"color": "gold", "label": "", // 2 ragers, 1 wind shaper: tranq!
+                            "starting_time": _ts(7, 57),
+                            "ending_time": _ts(8, 24)}
+                    ]
+                },
+                {
+                    label: "Bosses",
+                    times: [
+                            // TODO: Split to sepatate rows?
+                            {"color": "orange", "label": "Bombs",
+                                "starting_time": _ts(1, 23),
+                                "ending_time": _ts(2, 32)},
+
+                            {"color": "orange", "label": "Strafes",
+                                "starting_time": _ts(5, 4),
+                                "ending_time": _ts(6, 55)},
+
+                            {"color": "blue", "label": "", // Cutscene! ~ 4 sec
+                                "starting_time": _ts(7, 18),
+                                "ending_time": _ts(7, 22)},
+
+
+                            {"color": "orange", "label": "Cleaves",  // healer DPS?
+                                "starting_time": _ts(8, 28),
+                                "ending_time": _ts(9, 32)},
+
+                            // Once dps are in launchers:
+                            //   -- heroism, then launch (?)
+                            {"color": "red", "label": "Raigonn",  // Plan who goes where
+                                "starting_time": _ts(10, 10),
+                                "ending_time": _ts(11, 43)},
+                            {"color": "orangered", "label": "(Weak)",  // Plan who goes where
+                                "starting_time": _ts(11, 43),
+                                // carapace breaks: 11:43
+                                "ending_time": _ts(12, 30)},
+
+                    ]
+                },
+                {label: "Tank", times: [
+//                    {"color": "pink", "label": "", "starting_time": 800000, "ending_time": 900000},
+//                    {"color": "pink", "label": "", "starting_time": 900000, "ending_time": 400000}
+                ]},
+                {label: "Heal", times: [
+//                    {"color": "grey", "label": "", "starting_time": 910000, "ending_time": 900000},
+                ]},
+                {label: "DPS", times: [
+//                    {"color": "lightBlue", "label": "", "starting_time": 910000, "ending_time": 910000}
+                ]},
+                {label: "Hero", times: [
+//                    {"color": "lightBlue", "label": "", "starting_time": 910000, "ending_time": 910000}
+                ]},
+            ];
+
+            function timelineGate() {
+
+                var width = 13 * 60; // 1px per sec
+
+                //This solution is for relative time is from
+                //http://stackoverflow.com/questions/11286872/how-do-i-make-a-custom-axis-formatter-for-hours-minutes-in-d3-js
+                var formatTime = d3.time.format("%-M:%S"),
+                        formatMinutes = function (d) {
+                            return formatTime(new Date(2012, 0, 1, 0, 0, 0, d));
+                        };   //The intervals are in millis
+                var chart = d3.timeline()
+                        .relativeTime()
+                        .stack()
+                        // .rotateTicks(90)
+                        .tickFormat({
+                            format: formatMinutes,
+                            tickTime: d3.time.seconds,
+                            tickInterval: 30,
+                            tickSize: 15,
+                        });
+
+                var svg = d3.select("#timelineRelativeTime").append("svg").attr("width", width)
+                        .datum(dataGate).call(chart);
+                // console.log(dataGate);
+            }
+
+            timelineGate();
+        }
+    </script>
+</head>
+<body>
+
+<div>
+    <h3>Gate of the Setting Sun: 13:00</h3>
+    <div width="100%" id="timelineRelativeTime"></div>
+</div>
+
+</body>
+</html>
